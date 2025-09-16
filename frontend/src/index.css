@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 3D utilities and float animations */
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  .transform-gpu {
+    transform: translateZ(0);
+  }
+  .parallax-layer {
+    transform: translateZ(var(--z, 0)) scale(var(--s, 1));
+  }
+  .float-slow {
+    animation: float 8s ease-in-out infinite;
+  }
+  .float-medium {
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-fast {
+    animation: float 4s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-12px) translateZ(0);
+  }
+  100% {
+    transform: translateY(0) translateZ(0);
+  }
+}
