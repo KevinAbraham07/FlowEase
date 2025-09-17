@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -8,13 +8,24 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import data from "./data"; // your JSON array
+import { fetchStats } from "./data";
 
 function Source() {
-  const stats = data[0]; // take first entry
+  const [stats, setStats] = useState(null);
+  useEffect(() => {
+    fetchStats().then(setStats).catch(console.error);
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="p-3 rounded-md flex neon-shad flex-col flex-grow bg-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   const { sources } = stats;
 
-  // transform {gmail:4, calendar:3, manual:6} → [{name, value}]
   const chartData = Object.entries(sources).map(([key, value]) => ({
     name: key,
     value,

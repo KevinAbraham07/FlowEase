@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -9,10 +9,22 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import data from "./data"; // your JSON array
+import { fetchStats } from "./data"; // your JSON array
 
 function Timeline() {
-  const stats = data[0];
+  const [stats, setStats] = useState(null);
+  useEffect(() => {
+    fetchStats().then(setStats).catch(console.error);
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="p-3 rounded-md flex neon-shad flex-col flex-grow bg-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   const Months = [
     "January",
     "February",

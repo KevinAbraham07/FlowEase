@@ -1,8 +1,21 @@
-import React, { useState } from "react";
-import data from "./data";
+import React, { useState, useEffect } from "react";
+import { fetchStats } from "./data";
 import "./index.css";
+
 function CompletionCard() {
-  const [stats, setStats] = useState(data[0]);
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    fetchStats().then(setStats).catch(console.error);
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="p-3 rounded-md flex neon-shad flex-col flex-grow bg-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-3 rounded-md flex neon-shad flex-col flex-grow bg-white">
@@ -31,10 +44,10 @@ function CompletionCard() {
       </div>
       <div>
         <p className="text-md font-light">
-          {stats.change}%
+          {stats.change}%{" "}
           {stats.changeType === "increase"
-            ? " more than last month"
-            : " less than last month"}
+            ? "more than last month"
+            : "less than last month"}
         </p>
       </div>
     </div>

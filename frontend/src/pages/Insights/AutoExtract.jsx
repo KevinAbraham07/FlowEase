@@ -1,8 +1,27 @@
 import React, { useState } from "react";
-import data from "./data";
+import { fetchStats } from "./data";
 import "./index.css";
+import { useEffect } from "react";
+
 function AutoExtract() {
-  const [stats, setStats] = useState(data[0]);
+  const [stats, setStats] = useState(null);
+  useEffect(() => {
+    fetchStats()
+      .then((data) => {
+        console.log("Fetched stats:", data);
+        setStats(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="p-3 rounded-md flex neon-shad flex-col flex-grow bg-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-3 rounded-md flex flex-col neon2-shad flex-grow bg-white">
       <div className="flex items-center gap-2">
